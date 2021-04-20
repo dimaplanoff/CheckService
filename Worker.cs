@@ -30,7 +30,7 @@ namespace CheckService
             {
                 try
                 {
-                    //собираем все задачи из конф. файла
+                    //СЃС‡РёС‚С‹РІР°РµРј РІСЃРµ С‚Р°СЃРєРё
                     Common.ConfHasChanges();
                     if (Common.ActualTasks.Length != 0)
                     {
@@ -42,20 +42,20 @@ namespace CheckService
                         else
                         {
                             var fname = Common.syslog + "\\Log_" + DateTime.Now.ToString("yyyy_MM_dd") + ".log";
-                            //проверяем когда какие задачи были выполнены из лог файла
+                            //СЃРјРѕС‚СЂРёРј РєРѕРіРґР° Рё С‡С‚Рѕ РІС‹РїРѕР»РЅСЏР»РѕСЃСЊ РїРѕ СЃРёСЃС‚РµРјРЅРѕРјСѓ Р»РѕРіСѓ
                             if (File.Exists(fname))
                             {
                                 var syslog = File.ReadAllLines(fname).Where(m => !string.IsNullOrEmpty(m)).ToArray();
                                 for (int i = 0; i < syslog.Length - 1; i++)
                                 {
-                                    if (Regex.IsMatch(syslog[i], @"[a-zA-Zа-яА-Я0-9]+") && Regex.IsMatch(syslog[i + 1], @"\d{1,2}\.\d{1,2}\.\d{4}\ \d{1,2}\:\d{1,2}\:\d{1,2}"))
+                                    if (Regex.IsMatch(syslog[i], @"[a-zA-ZР°-СЏРђ-РЇ0-9]+") && Regex.IsMatch(syslog[i + 1], @"\d{1,2}\.\d{1,2}\.\d{4}\ \d{1,2}\:\d{1,2}\:\d{1,2}"))
                                         alreadyWorked.Add(new KeyValuePair<string, DateTime>(syslog[i], DateTime.Parse(syslog[i + 1])));
                                 }
                             }
                         }
 
                         List<STask> plannedTasks = new List<STask>();
-                        //ставим на выполнение
+                        //РѕС‚Р±СЂР°СЃС‹РІР°РµРј, С‡С‚Рѕ СѓР¶Рµ СЃРµРіРѕРґРЅСЏ РІС‹РїРѕР»РЅСЏР»РѕСЃСЊ (РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ РёРЅРґРёРІРёРґСѓР°Р»СЊРЅС‹Рј СЂР°СЃРїРёСЃР°РЅРёРµРј)
                         foreach (var task in Common.ActualTasks.Where(m=>!string.IsNullOrEmpty(m.Name)))
                         {
                             if (task.ScheduleDT.Count == 1)
@@ -110,7 +110,7 @@ namespace CheckService
 
                                                 if (dt.Rows.Count != 0)
                                                 {
-                                                    //фиксируем ошибки для сообщения
+                                                    //СЃРѕР±РёСЂР°РµРј РѕС€РёР±РєРё
                                                     string errstr = "";
                                                     foreach (DataRow row in dt.Rows)
                                                     {
@@ -136,7 +136,7 @@ namespace CheckService
                                         Log.Write(ex);
                                     }
                                 }
-                                //пишем системный лог о работе сервиса для последующего цикла
+                                //РїРёС€РµРј Р»РѕРі РґР»СЏ СЃР»РµРґСѓСЋС‰РµРіРѕ С†РёРєР»Р°
                                 Log.Write(task);
                             }
 
@@ -186,7 +186,7 @@ namespace CheckService
                 GC.Collect();
                 GC.GetTotalMemory(true);                
                 await Task.Delay(1000*60*15, stoppingToken);
-                //await Task.Delay(1000, stoppingToken);
+     
             }
         }
     }
